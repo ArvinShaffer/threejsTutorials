@@ -1,9 +1,6 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
-import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
-import { VertexNormalsHelper } from "three/examples/jsm/helpers/VertexNormalsHelper.js";
-
 
 const scene = new THREE.Scene();
 
@@ -54,32 +51,10 @@ const uv = new Float32Array([
     1,
     1,
     0,
-    1,
+    0,
 ])
 // create uv attribute
 geometry.setAttribute("uv", new THREE.BufferAttribute(uv, 2));
-
-// set normals
-const normals = new Float32Array([
-    0,
-    0,
-    1,
-    0,
-    0,
-    1,
-    0,
-    0,
-    1,
-    0,
-    0,
-    1,
-]);
-// create normals attribute
-geometry.setAttribute("normal", new THREE.BufferAttribute(normals, 3));
-
-// compute Vertex Normals
-//geometry.computeVertexNormals();
-
 console.log(geometry);
 
 // create material
@@ -90,9 +65,6 @@ const plane = new THREE.Mesh(geometry, material);
 scene.add(plane);
 plane.position.x = 3;
 
-// create vertexNormalsHelper
-const helper = new VertexNormalsHelper(plane, 0.2, 0xff0000);
-scene.add(helper);
 
 // set camera position
 camera.position.z = 5;
@@ -138,13 +110,3 @@ gui.add(eventObj, "Fullscreen").name("Fullscreen")
 gui.add(eventObj, "ExitFullscreen").name("Exit Fullscreen");
 
 
-// rgbeLoader 
-let rgbeLoader = new RGBELoader();
-rgbeLoader.load("./texture/Alex_Hart-Nature_Lab_Bones_2k.hdr",
-    (envMap) => { 
-        envMap.mapping = THREE.EquirectangularReflectionMapping;
-        scene.background = envMap;
-        scene.environment = envMap;
-        planeMaterial.envMap = envMap;
-        material.envMap = envMap;
-});
